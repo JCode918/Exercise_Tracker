@@ -19,7 +19,6 @@ function App() {
       <div className="container">
         <Navbar />
         <br />
-        <h1>Work in Progress</h1>
         <Route path="/" exact component={ExercisesList} />
         <Route path="/edit/:id" exact component={EditExercise} />
         <Route path="/create" exact component={CreateExercise} />
