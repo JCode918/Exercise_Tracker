@@ -6,9 +6,11 @@ export default class CreateUsers extends Component {
         super(props);
 
         this.state = {
-            username: ''
+            username: '',
+            password: ''
         }
         this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
     }
@@ -16,6 +18,13 @@ export default class CreateUsers extends Component {
     onChangeUsername(e) {
         this.setState({
             username: e.target.value
+
+        })
+    }
+
+    onChangePassword(e) {
+        this.setState({
+            password: e.target.value
         })
     }
 
@@ -23,14 +32,16 @@ export default class CreateUsers extends Component {
         e.preventDefault();
 
         const user = {
-            username: this.state.username
+            username: this.state.username,
+            password: this.state.password
         }
         console.log(user)
         axios.post('http://localhost:5000/users/add', user)
-        .then(res => console.log(res.data))
+            .then(res => console.log(res.data)).catch(err => console.log('Error: ' + err));
 
         this.setState({
-            username: ''
+            username: '',
+            password: ''
         })
     }
     render() {
@@ -45,6 +56,14 @@ export default class CreateUsers extends Component {
                             className="form-control"
                             value={this.state.username}
                             onChange={this.onChangeUsername} />
+                    </div>
+                    <div className="form-group">
+                        <label>Password:</label>
+                        <input type="password"
+                            required
+                            className="form-control"
+                            value={this.state.password}
+                            onChange={this.onChangePassword} />
                     </div>
                     <div className="form-group">
                         <input type="submit" value="Create user" className="btn btn-primary" />
