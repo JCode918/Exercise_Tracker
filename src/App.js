@@ -11,6 +11,7 @@ import ExercisesList from "./components/exercises-list.component"
 import EditExercise from "./components/edit-exercises.component"
 import CreateExercise from "./components/create-exercise.component"
 import CreateUser from "./components/create-user.component"
+import SignUp from "./components/sign-up.component"
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/edit/:id" exact component={EditExercise} />
         <Route path="/create" exact component={CreateExercise} />
         <Route path="/user" exact component={CreateUser} />
+        <Route path="/signup" render={() => <SignUp/>}/>
       </div>
     </Router>
 
