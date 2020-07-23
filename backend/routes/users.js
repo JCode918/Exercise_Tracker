@@ -23,14 +23,14 @@ router.route('/add').post((req, res) => {
 });
 
 router.route('/login').post((req, res, next) => {
-    passport.authenticate('local', (err, User, info) => {
+    passport.authenticate('local', (err, user, info) => {
         if (err) {
             return next(err);
         }
-        if (!User) {
+        if (!user) {
             return res.redirect('/login?info' + info)
         }
-        req.logIn(User, function (err) {
+        req.logIn(user, function (err) {
             if (err) {
                 return next(err)
             }
@@ -39,6 +39,8 @@ router.route('/login').post((req, res, next) => {
     })(req, res, next)
 })
 
-router.route('/login').get()
+router.route('/userin').get(connectEnsureLogin.ensureLoggedIn(), (req, res) => res.send({ user: req.user }))
+  
+  
 
 module.exports = router
