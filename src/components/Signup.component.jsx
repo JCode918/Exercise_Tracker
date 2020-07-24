@@ -26,10 +26,10 @@ export default class Signup extends Component {
         console.log(this.state.username)
         e.preventDefault()
 
-        axios.post('/user/', {
+        axios.post('http://localhost:5000/users/signup', {
             username: this.state.username,
-            password: this.state.password
-        })
+            password: this.state.password            
+        })        
             .then(response => {
                 console.log(response)
                 if (!response.data.errmsg) {

@@ -4,12 +4,20 @@ const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
-const passport = require('passport')
+const passport = require('./passport') //<- This here is where the local strategy is located and loaded 
 const bodyParser = require('body-parser')
 const app = express();
 const morgan = require('morgan')
 const port = process.env.PORT || 5000;
 require('dotenv').config();
+
+const uri = process.env.ATLAS_URI;
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true })
+
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log("MongoDB database connection established successfully");
+});
 
 // MIDDLEWARE LOGGER
 app.use(morgan('dev'))
@@ -20,16 +28,20 @@ app.use(
 )
 app.use(bodyParser.json())
 
-// Passport
-app.use(passport.initialize())
-app.use(passport.session())
 
 //Sessions
 app.use(session({
     secret: 'Jazz-Melo-Computer',
     resave: false,
+    store: new MongoStore({mongooseConnection: connection}),
     saveUninitialized: false
 }))
+
+// Passport
+app.use(passport.initialize())
+app.use(passport.session())
+
+//require('../backend/passport/localstrategy')(passport)
 
 app.use((req, res, next) => {
     console.log('req.session', req.session);
@@ -44,14 +56,6 @@ app.post('/user', (req, res) => {
 
 app.use(cors()); // cors middleware
 app.use(express.json());
-
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true })
-
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log("MongoDB database connection established successfully");
-});
 
 //const exercisesRouter = require('./routes/exercises')
 const usersRouter = require('./routes/users')

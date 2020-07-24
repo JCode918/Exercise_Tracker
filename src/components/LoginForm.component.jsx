@@ -40,7 +40,7 @@ export default class LoginForm extends React.Component {
         //alert('Form Was Submitted: ' + this.state.username + ' ' + this.state.password)
         e.preventDefault();
         // Connect to axios to send to backend
-        axios.post('/user/login', {
+        axios.post('http://localhost:5000/users/login', {
             username: this.state.username,
             password: this.state.password
         })

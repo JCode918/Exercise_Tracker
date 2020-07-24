@@ -82,7 +82,7 @@ router.route('/logout').post((req, res) =>{
     }
 }) */
 
-router.post('/', (req, res) => {
+router.route('/signup').post( (req, res) => {
     console.log('user signup');
 
     const { username, password } = req.body
@@ -96,20 +96,21 @@ router.post('/', (req, res) => {
             })
         }
         else {
+            console.log('I am right here')
             const newUser = new User({
                 username: username,
                 password: password
             })
             newUser.save((err, savedUser) => {
                 if (err) return res.json(err)
-                res.json('Here is the user', savedUser)
+                //res.json('Here is the user', savedUser)
+                console.log(newUser)
             })
         }
     })
 })
 
-router.post(
-    '/login',
+router.route('/login').post(
     function (req, res, next) {
         console.log('routes/user.js, login, req.body: ');
         console.log(req.body)
@@ -125,7 +126,7 @@ router.post(
     }
 )
 
-router.get('/', (req, res, next) => {
+router.route('/').get((req, res, next) => {
     console.log('===== user!!======')
     console.log(req.user)
     if (req.user) {
@@ -135,7 +136,7 @@ router.get('/', (req, res, next) => {
     }
 })
 
-router.post('/logout', (req, res) => {
+router.route('/logout').post((req, res) => {
     if (req.user) {
         req.logout()
         res.send({ msg: 'logging out' })
