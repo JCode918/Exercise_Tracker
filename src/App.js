@@ -29,24 +29,21 @@ class App extends Component {
     }
 
     this.getUser = this.getUser.bind(this);
-    this.componentDidUpdate = this.componentDidUpdate.bind(this)
+    this.componentDidMount= this.componentDidMount.bind(this)
     this.updateUser = this.updateUser.bind(this)
 
   }
 
- /*  componentDidMount() {
-    this.getUser()
-  } */
-  componentDidUpdate(){
+  componentDidMount() {
     this.getUser()
   }
-
+ 
   updateUser(userObject) {
     this.setState(userObject)
   }
 
   getUser() {
-    axios.get('/user/').then(response => {
+    axios.get('http://localhost:5000/users/').then(response => {
       console.log('Get user Rsponse: ')
       console.log(response.data)
 
