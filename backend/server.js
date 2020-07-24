@@ -1,14 +1,26 @@
 const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
+mongoose.Promise = global.Promise
 const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 const passport = require('passport')
-
+const bodyParser = require('body-parser')
+const app = express();
+const morgan = require('morgan')
+const port = process.env.PORT || 5000;
 require('dotenv').config();
 
-const app = express();
-const port = process.env.PORT || 5000;
+// MIDDLEWARE LOGGER
+app.use(morgan('dev'))
+app.use(
+    bodyParser.urlencoded({
+        extended: false
+    })
+)
+app.use(bodyParser.json())
 
+// Passport
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -41,10 +53,10 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 });
 
-const exercisesRouter = require('./routes/exercises')
+//const exercisesRouter = require('./routes/exercises')
 const usersRouter = require('./routes/users')
 
-app.use('/exercises', exercisesRouter)
+//app.use('/exercises', exercisesRouter)
 app.use('/users', usersRouter)
 
 app.listen(port, () => {
