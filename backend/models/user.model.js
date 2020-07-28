@@ -39,6 +39,7 @@ userSchema.pre('save', function (next) {
     } else {
         console.log('models/user.js hashPassword in pre save');
         console.log(this.password)
+        console.log("Right Here!!")
         this.password = this.hashPassword(this.password)
         console.log(this.password)
         next()
